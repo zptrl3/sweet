@@ -27,26 +27,15 @@ export class SweatService {
     this.handleError = httpErrorHandler.createHandleError('SweatService');
   }
 
-  get(link): Observable<ISweat[]> {
-    return this.http.get<ISweat[]>(this.address + link + '/')
-      .pipe(
-        catchError(this.handleError('getSweats', []))
-      );
+  get(link, params): Observable<Response> {
+    console.log(this.address + link + '/' + params);
+    return this.http.get<Response>(this.address + link + '/' + params);
   }
 
-  post (link, sweat: ISweat): Observable<ISweat> {
+  post (link, sweat: any): Observable<ISweat> {
     return this.http.post<ISweat>(this.address + link + '/', sweat, httpOptions)
       .pipe(
         catchError(this.handleError('addSweat', sweat))
       );
   }
-  /* post(link, params): Observable<Response> {
-    const postHeaders = new Headers();
-    postHeaders.append('Content-Type', 'application/json');
-    postHeaders.append('Accept', 'application/json');
-
-    const options = new RequestOptions({ headers: postHeaders });
-    return this.http.post(this.address + link, JSON.stringify(params), options);
-  } */
-
 }

@@ -18,7 +18,7 @@ export class CreateSweatComponent implements OnInit {
   image: FormControl;
   lat: FormControl;
   lon: FormControl;
-  base64textString = [];
+  base64textString: string;
   constructor(
     private sweatService: SweatService,
     private router: Router
@@ -42,10 +42,11 @@ export class CreateSweatComponent implements OnInit {
 
   saveSweat(formValues) {
     const locdatas = [];
+
     for (let i = 1; i <= 12; i++) {
       locdatas.push({
-        x: this.lat2tile(formValues.lat, i),
-        y: this.long2tile(formValues.lon, i),
+        x: this.lat2tile(parseInt(formValues.lat), i),
+        y: this.long2tile(parseInt(formValues.lon), i),
         z: i
       });
     }
@@ -68,7 +69,7 @@ export class CreateSweatComponent implements OnInit {
       console.log('Post Error');
       console.log(err.status);
       console.log(err);
-    }
+      }
     );
     this.router.navigate(['/sweats']);
     // console.log(sweat);
@@ -108,10 +109,12 @@ export class CreateSweatComponent implements OnInit {
       reader.onload = this.handleReaderLoaded.bind(this);
       reader.readAsBinaryString(file);
     }
+   
   }
 
   handleReaderLoaded(e) {
-    this.base64textString.push('data:image/png;base64,' + btoa(e.target.result));
+    this.base64textString = 'data:image/jpeg;base64,' + btoa(e.target.result);
+    console.log(this.base64textString);
   }
 
   cancel() {
