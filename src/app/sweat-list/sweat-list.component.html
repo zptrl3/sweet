@@ -1,39 +1,79 @@
 <div class="container">
-  <!-- For loop starts here-->
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="thumbnail">
-        <div class="caption">
-          <!-- Use "if" to check if post contains an image -->
-          <img src="" alt="If there is an image it will shown here!">
-          <h4><b>Post Name</b></h4>
-          <p>Post content</p>
-          <p>Post City</p>
-          <p><small>Post lat and lon</small></p>
-          <p><i>Post publishing date</i></p>
+  <h1 align="center">Latest Sweats</h1>
+  <!-- Card view to show sweats -->
+  <div *ngFor="let sweat of allSweats" class="row ">
+    <div class="cont">
+      <div class="card border-dark" style="width: 36rem;">
+        <img *ngIf="sweat.imagePath" src="{{'http://5.2.86.85:8083/img/' + sweat.imagePath}}" 
+            alt="If there is an image it will shown here!" class="card-img-top">
+        <div class="card-body">
+          <h6><i><b>Username: </b></i>{{sweat.owner}}</h6>
+          <p class="card-text"><i><b>Content:</b></i> {{sweat.body}}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><i><b>Latitude: </b></i>{{sweat.lat}}</li>
+          <li class="list-group-item"><i><b>Longitude: </b></i>{{sweat.lng}}</li>
+          <li class="list-group-item"><i><b>Likes: </b></i>{{sweat.likes}}</li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="row">
+            <button type="button" class="btn btn-primary" id="viewCommentButton" data-toggle="modal" data-target="#viewCommentModal">View Comments</button>
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#addCommentModal">Add Comment</button>
+          </div>
+            <span class="badge badge-primary badge-pill">Number of comments: {{sweat.commentCollection.length}}</span>
+          </li>
+        </ul>
         </div>
       </div>
+
+      <!-- Comment modal to view comments -->
+      <div class="modal fade" id="viewCommentModal" tabindex="-1" role="dialog" aria-labelledby="viewCommentModalTitle" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="viewCommentModalTitle">Comments</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div *ngFor="let comment of sweat.commentCollection" class="modal-body">
+                <h6><i><b>Username:</b></i>{{comment.owner}}</h6>
+                <p>{{comment.body}}</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comment modal to add comments -->
+        <div class="modal fade" id="addCommentModal" tabindex="-1" role="dialog" aria-labelledby="addCommentModalTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addCommentModalTitle">New Comment</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="recipient-name" class="col-form-label">Username:</label>
+                      <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="form-group">
+                      <label for="message-text" class="col-form-label">Comment:</label>
+                      <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Send message</button>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
-  </div>
-  <!-- For loop ends here -->
-
-  <!-- Paginator -->
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="pagination">
-        <span class="step-links">
-          <!-- Use "if" to check whether there is a previous page or not -->
-          <a href="">previous&laquo;</a>
-
-
-          <span class="current">
-            Page 1 of 3
-          </span>
-
-          <!-- Use "if" to check whether there is a previous page or not -->
-          <a href="">next&raquo;</a>
-        </span>
-      </div>
-    </div>
-  </div>
 </div>

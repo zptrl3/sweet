@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="col-md-6">
+  <div class="cont">
     <h2>Create Sweat</h2>
     <form [formGroup]="newSweatForm" (ngSubmit)="saveSweat(newSweatForm.value)" autocomplete="off" novalidate>
       <div class="form-group">
@@ -31,8 +31,8 @@
         <em *ngIf="!validateLon()">Required</em>
         <input type="text" class="form-control" formControlName="lon">
       </div>
-      
-      <button type="submit" class="btn btn-primary" (onClick)="onSubmit()" [disabled]="newSweatForm.invalid">Submit</button>
+      <div class=""></div>
+      <button type="submit" class="btn btn-success" (onClick)="onSubmit()" [disabled]="newSweatForm.invalid">Submit</button>
       <button type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>
       
     </form>

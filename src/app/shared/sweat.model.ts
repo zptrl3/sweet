@@ -3,6 +3,6 @@ export interface ISweat {
     lat: number;
     lon: number;
     locDatas: number[];
-    image: any;
+    img: any;
     owner: string;
   }

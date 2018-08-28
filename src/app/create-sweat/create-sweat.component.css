@@ -20,4 +20,16 @@ em {
   .error :ms-input-placeholder {
     color: #999;
   }
-  
+
+button {
+  margin-top: 20px;
+  margin-right: 12px;
+}
+
+form {
+  margin-top: 3rem;
+}
+
+.cont {
+  margin: auto;
+}

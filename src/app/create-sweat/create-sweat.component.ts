@@ -56,7 +56,7 @@ export class CreateSweatComponent implements OnInit {
       lat: formValues.lat,
       lon: formValues.lon,
       locDatas: locdatas,
-      image: this.base64textString,
+      img: this.base64textString,
       owner: formValues.name
     };
 
@@ -72,7 +72,6 @@ export class CreateSweatComponent implements OnInit {
       }
     );
     this.router.navigate(['/sweats']);
-    // console.log(sweat);
   }
 
   long2tile(lon, zoom) {

@@ -32,8 +32,8 @@ export class SweatService {
     return this.http.get<Response>(this.address + link + '/' + params);
   }
 
-  post (link, sweat: any): Observable<ISweat> {
-    return this.http.post<ISweat>(this.address + link + '/', sweat, httpOptions)
+  post (link, sweat: any): Observable<Response> {
+    return this.http.post<ISweat>(this.address + link + '/', JSON.stringify(sweat), httpOptions)
       .pipe(
         catchError(this.handleError('addSweat', sweat))
       );

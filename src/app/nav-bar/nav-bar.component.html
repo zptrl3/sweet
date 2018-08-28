@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <a class="navbar-brand mb-0">Sweat</a>
+  <a routerLink="/sweats" class="navbar-brand mb-0" id="name">Sweat</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar7">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -8,10 +8,6 @@
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/sweats/new']" routerLinkActive="active">Create Sweat</a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="#">Login</a>
       </li>
     </ul>
   </div>

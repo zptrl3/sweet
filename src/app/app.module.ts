@@ -13,10 +13,10 @@ import { appRoutes } from './routes';
 import { SweatService } from './shared/sweat.service';
 import { MessageService } from './shared/message.service';
 import { HttpErrorHandler } from './shared/http-error-handler.service';
-import { SweatDetailComponent } from './sweat-detail/sweat-detail.component';
+
 
 @NgModule({
-  declarations: [AppComponent, NavBarComponent, SweatListComponent, CreateSweatComponent, SweatDetailComponent],
+  declarations: [AppComponent, NavBarComponent, SweatListComponent, CreateSweatComponent],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
