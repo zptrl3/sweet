@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ISweat } from '../shared/sweat.model';
 import { SweatService } from '../shared/sweat.service';
-import { Router } from '@angular/router';
-import { concat } from '../../../node_modules/rxjs/operators';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sweat-list',
@@ -11,24 +9,35 @@ import { concat } from '../../../node_modules/rxjs/operators';
 })
 export class SweatListComponent implements OnInit {
   allSweats: any = [];
-  containImage = false;
-  commentCounter = 0;
+  currentSweat = {
+    id: null,
+    commentCollection: null
+  };
+  currentCommentSweat: any;
+  sendedFormValues: any;
 
-  lat = 41.0214;
-  lng = 28.9948;
-  z = 1;
+  newCommentForm: FormGroup;
+  owner: FormControl;
+  body: FormControl;
 
   constructor(
-    private sweatService: SweatService,
-    private router: Router 
+    private sweatService: SweatService
   ) { }
 
   ngOnInit() {
     this.getMessages();
+
+    this.owner = new FormControl('');
+    this.body = new FormControl('', Validators.required);
+
+    this.newCommentForm = new FormGroup({
+      owner: this.owner,
+      body: this.body
+    });
   }
 
   getMessages(): any {
-    let params = '?n=10';
+    const params = '?n=10';
     this.sweatService.get('get', params).subscribe(res => {
       this.allSweats = res;
       console.log(res);
@@ -38,5 +47,35 @@ export class SweatListComponent implements OnInit {
     }
   );
   }
-  
+
+  getComment(formValues) {
+    this.sendedFormValues = formValues;
+  }
+
+  getSweatComment(sweat) {
+    this.currentSweat = sweat;
+  }
+
+  addComment(sweat) {
+    this.currentCommentSweat = sweat;
+    console.log(this.currentSweat);
+    const commentParams = {
+      body: this.sendedFormValues.body.trim(),
+      id: this.sendedFormValues.id,
+      owner: this.sendedFormValues.owner
+    };
+
+    this.sweatService.post('addComment', commentParams).subscribe(
+      res => {
+        console.log('New POST succesful');
+      },
+      err => {
+        console.log('New Post error');
+      });
+  }
+
+  validateComment() {
+    return this.body.valid || this.body.untouched;
+  }
+
 }

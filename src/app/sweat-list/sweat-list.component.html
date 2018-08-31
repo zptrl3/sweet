@@ -15,65 +15,72 @@
           <li class="list-group-item"><i><b>Longitude: </b></i>{{sweat.lng}}</li>
           <li class="list-group-item"><i><b>Likes: </b></i>{{sweat.likes}}</li>
           <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div class="row">
-            <button type="button" class="btn btn-primary" id="viewCommentButton" data-toggle="modal" data-target="#viewCommentModal">View Comments</button>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#addCommentModal">Add Comment</button>
+          <div class="row">
+            <button type="button" class="btn btn-primary" id="viewCommentButton" data-toggle="modal" data-target="#viewCommentModal" (click)="getSweatComment(sweat)" >View Comments</button>
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#addCommentModal" (click)="addComment(sweat)">Add Comment</button>
           </div>
             <span class="badge badge-primary badge-pill">Number of comments: {{sweat.commentCollection.length}}</span>
           </li>
         </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Comment modal to view comments -->
+<div class="modal fade" id="viewCommentModal" tabindex="-1" role="dialog" aria-labelledby="viewCommentModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewCommentModalTitle">Comments</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div *ngFor="let comment of currentSweat.commentCollection; last as isLast" class="modal-body" autocomplete="off" novalidate>
+        <div class="col-xs-6">
+        <h6><i><b>Username: </b></i>{{comment.owner}}</h6>
+        <p>{{comment.body}}</p>
+        <div *ngIf="!isLast"><hr></div>
         </div>
       </div>
-
-      <!-- Comment modal to view comments -->
-      <div class="modal fade" id="viewCommentModal" tabindex="-1" role="dialog" aria-labelledby="viewCommentModalTitle" aria-hidden="true">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="viewCommentModalTitle">Comments</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div *ngFor="let comment of sweat.commentCollection" class="modal-body">
-                <h6><i><b>Username:</b></i>{{comment.owner}}</h6>
-                <p>{{comment.body}}</p>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Comment modal to add comments -->
-        <div class="modal fade" id="addCommentModal" tabindex="-1" role="dialog" aria-labelledby="addCommentModalTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="addCommentModalTitle">New Comment</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form>
-                    <div class="form-group">
-                      <label for="recipient-name" class="col-form-label">Username:</label>
-                      <input type="text" class="form-control" id="recipient-name">
-                    </div>
-                    <div class="form-group">
-                      <label for="message-text" class="col-form-label">Comment:</label>
-                      <textarea class="form-control" id="message-text"></textarea>
-                    </div>
-                  </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Send message</button>
-                </div>
-              </div>
-            </div>
-          </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- Comment modal to add comments -->
+<div class="modal fade" id="addCommentModal" tabindex="-1" role="dialog" aria-labelledby="addCommentModalTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addCommentModalTitle">New Comment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="newCommentForm" (ngSubmit)="saveComment(newCommentForm.value)" >
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Username:</label>
+            <input type="text" class="form-control" formControlName="owner">
+          </div>
+          <div class="form-group" [ngClass]="{'error': !validateComment()}">
+            <label for="message-text" class="col-form-label">Comment:</label>
+            <em *ngIf="!validateComment()">Required</em>
+            <textarea class="form-control" rows="3" formControlName="body"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (onClick)="onSubmit()"
+            [disabled]="newCommentForm.invalid">Send message</button>
+      </div>
+    </div>
+  </div>
 </div>

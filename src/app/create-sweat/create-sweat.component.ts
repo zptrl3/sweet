@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 
 import { SweatService } from '../shared/sweat.service';
@@ -45,7 +44,9 @@ export class CreateSweatComponent implements OnInit {
 
     for (let i = 1; i <= 12; i++) {
       locdatas.push({
+        // tslint:disable-next-line:radix
         x: this.lat2tile(parseInt(formValues.lat), i),
+        // tslint:disable-next-line:radix
         y: this.long2tile(parseInt(formValues.lon), i),
         z: i
       });
@@ -108,7 +109,6 @@ export class CreateSweatComponent implements OnInit {
       reader.onload = this.handleReaderLoaded.bind(this);
       reader.readAsBinaryString(file);
     }
-   
   }
 
   handleReaderLoaded(e) {
