@@ -17,6 +17,7 @@ export class CreateSweatComponent implements OnInit {
   image: FormControl;
   lat: FormControl;
   lon: FormControl;
+  city: FormControl;
   base64textString: string;
   constructor(
     private sweatService: SweatService,
@@ -27,6 +28,7 @@ export class CreateSweatComponent implements OnInit {
     this.name = new FormControl('');
     this.content = new FormControl('', Validators.required);
     this.image = new FormControl('');
+    this.city = new FormControl('');
     this.lat = new FormControl('', Validators.required);
     this.lon = new FormControl('', Validators.required);
 
@@ -34,6 +36,7 @@ export class CreateSweatComponent implements OnInit {
       name: this.name,
       content: this.content,
       image: this.image,
+      city: this.city,
       lat: this.lat,
       lon: this.lon
     });

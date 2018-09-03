@@ -20,6 +20,18 @@
         <img src="{{base64textString}}" alt="" id="img" class="img-fluid">
       </div>
 
+      <div class="form-group">
+        <label for="city">Choose a city</label>
+        <select class="form-control" id="city" formControlName="city">
+          <option>İstanbul</option>
+          <option>İzmir</option>
+          <option>Ankara</option>
+          <option>Trabzon</option>
+          <option>Antalya</option>
+          <option>Malatya</option>
+        </select>
+      </div>
+
       <div class="form-group" [ngClass]="{'error': !validateLat()}">
         <label for="latitude">Enter latitude value</label>
         <em *ngIf="!validateLat()">Required</em>
