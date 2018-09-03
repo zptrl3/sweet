@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SweatService } from '../shared/sweat.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router, NavigationEnd } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sweat-list',
@@ -9,20 +11,26 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class SweatListComponent implements OnInit {
   allSweats: any = [];
+  sweatId: any;
+  navigationSubscription: any;
   currentSweat = {
     id: null,
     commentCollection: null
   };
-  currentCommentSweat: any;
-  sendedFormValues: any;
 
   newCommentForm: FormGroup;
   owner: FormControl;
   body: FormControl;
 
   constructor(
-    private sweatService: SweatService
-  ) { }
+    private sweatService: SweatService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = function() {
+      return false;
+    };
+  }
 
   ngOnInit() {
     this.getMessages();
@@ -44,33 +52,41 @@ export class SweatListComponent implements OnInit {
     },
     err => {
       console.log(err);
-    }
-  );
+    });
   }
 
-  getComment(formValues) {
-    this.sendedFormValues = formValues;
+  getSweatId(sweat) {
+    this.sweatId = sweat.id;
   }
 
   getSweatComment(sweat) {
     this.currentSweat = sweat;
   }
 
-  addComment(sweat) {
-    this.currentCommentSweat = sweat;
-    console.log(this.currentSweat);
+  addComment(formValues) {
     const commentParams = {
-      body: this.sendedFormValues.body.trim(),
-      id: this.sendedFormValues.id,
-      owner: this.sendedFormValues.owner
+      body: formValues.body.trim(),
+      id: this.sweatId,
+      owner: formValues.owner
     };
 
     this.sweatService.post('addComment', commentParams).subscribe(
       res => {
         console.log('New POST succesful');
+        this.toastr.success('Your comment added successfully.', 'Success!', {
+          timeOut: 2000
+        });
       },
       err => {
         console.log('New Post error');
+        this.toastr.error('Something is not right.', 'Post Error', {
+          timeOut: 3000
+        });
+      },
+      // Anonymous function to reload page after sending message
+      () => {
+        this.router.navigated = false;
+        this.router.navigate([this.router.url]);
       });
   }
 

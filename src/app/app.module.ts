@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
@@ -14,20 +15,25 @@ import { SweatService } from './shared/sweat.service';
 import { MessageService } from './shared/message.service';
 import { HttpErrorHandler } from './shared/http-error-handler.service';
 
+import { ToastrModule } from 'ngx-toastr';
+
 
 @NgModule({
   declarations: [AppComponent, NavBarComponent, SweatListComponent, CreateSweatComponent],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, {onSameUrlNavigation: 'reload'}),
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [
     SweatService,
     MessageService,
-    HttpErrorHandler],
+    HttpErrorHandler
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
