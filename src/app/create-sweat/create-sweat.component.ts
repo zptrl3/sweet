@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, Event, NavigationStart, NavigationEnd } from '@angular/router';
 
 import { SweatService } from '../shared/sweat.service';
 import { ISweat } from '../shared/sweat.model';
+import { CITY_COLLECTION } from '../shared/mock-cities';
+
 
 @Component({
   selector: 'app-create-sweat',
@@ -18,11 +20,30 @@ export class CreateSweatComponent implements OnInit {
   lat: FormControl;
   lon: FormControl;
   city: FormControl;
+  locationSelection: FormControl;
+
+  mockCities = CITY_COLLECTION;
+  locationEntryType = true;
+  selectedCity = {
+    city: '', lat: '', lon: ''
+  };
   base64textString: string;
+  showLoadingIndicator = true;
+
   constructor(
     private sweatService: SweatService,
     private router: Router
-  ) {}
+  ) {
+    this.router.events.subscribe(((routerEvent: Event) => {
+      if (routerEvent instanceof NavigationStart) {
+        this.showLoadingIndicator = true;
+      }
+
+      if (routerEvent instanceof NavigationEnd) {
+        this.showLoadingIndicator = false;
+      }
+    }));
+  }
 
   ngOnInit() {
     this.name = new FormControl('');
@@ -38,7 +59,7 @@ export class CreateSweatComponent implements OnInit {
       image: this.image,
       city: this.city,
       lat: this.lat,
-      lon: this.lon
+      lon: this.lon,
     });
   }
 
@@ -75,7 +96,7 @@ export class CreateSweatComponent implements OnInit {
       console.log(err);
       }
     );
-    this.router.navigate(['/sweats']);
+    this.navigateHome();
   }
 
   long2tile(lon, zoom) {
@@ -120,6 +141,20 @@ export class CreateSweatComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/sweats']);
+    this.navigateHome();
+  }
+
+  onCityChange(selectedCity) {
+    this.selectedCity = selectedCity;
+  }
+
+  setType(bool) {
+    this.locationEntryType = bool;
+  }
+
+  navigateHome() {
+    setTimeout(() => {
+      this.router.navigate(['/sweats']);
+    }, 3000);
   }
 }

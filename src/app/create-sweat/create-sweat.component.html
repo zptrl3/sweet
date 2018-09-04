@@ -15,33 +15,32 @@
 
       <div class="form-group">
         <label for="image">Upload a picture</label>
-        <input type="file" class="form-control-file" accept=".png, .jpg, .jpeg" id="image" formControlName="image" (change)="onUploadChange($event)"
-        />
+        <input type="file" class="form-control-file" accept=".png, .jpg, .jpeg" id="image" formControlName="image" 
+          (change)="onUploadChange($event)"/>
         <img src="{{base64textString}}" alt="" id="img" class="img-fluid">
       </div>
 
-      <div class="form-group">
-        <label for="city">Choose a city</label>
-        <select class="form-control" id="city" formControlName="city">
-          <option>İstanbul</option>
-          <option>İzmir</option>
-          <option>Ankara</option>
-          <option>Trabzon</option>
-          <option>Antalya</option>
-          <option>Malatya</option>
-        </select>
-      </div>
+        <div class="form-group">
+          <label for="city">Choose a city</label>
+          <select class="form-control" id="city" formControlName="city" [ngModel]="selectedCity"
+            (ngModelChange)="onCityChange($event)" name="citySelector">
+              <option [disabled] = "true" [selected] = "true" >Select a city</option>
+              <option [ngValue]="i" *ngFor="let i of mockCities">
+                {{i.city}}
+              </option>
+          </select>
+        </div>
 
-      <div class="form-group" [ngClass]="{'error': !validateLat()}">
-        <label for="latitude">Enter latitude value</label>
-        <em *ngIf="!validateLat()">Required</em>
-        <input type="text" class="form-control" formControlName="lat">
-      </div>
+        <div class="form-group" [ngClass]="{'error': !validateLat()}">
+          <label for="latitude">Enter latitude value</label>
+          <em *ngIf="!validateLat()">Required</em>
+          <input type="text" class="form-control" formControlName="lat" [ngModel]="selectedCity.lat">
 
-      <div class="form-group" [ngClass]="{'error': !validateLon()}">
-        <label for="longitude">Enter longitude value</label>
-        <em *ngIf="!validateLon()">Required</em>
-        <input type="text" class="form-control" formControlName="lon">
+        <div class="form-group" [ngClass]="{'error': !validateLon()}">
+          <label for="longitude">Enter longitude value</label>
+          <em *ngIf="!validateLon()">Required</em>
+          <input type="text" class="form-control" formControlName="lon" [ngModel]="selectedCity.lon">
+        </div>
       </div>
       
       <button type="submit" class="btn btn-success" (onClick)="onSubmit()" [disabled]="newSweatForm.invalid">Submit</button>
