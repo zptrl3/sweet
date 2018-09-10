@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, Event, NavigationStart, NavigationEnd } from '@angular/router';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 import { SweatService } from '../shared/sweat.service';
 import { ISweat } from '../shared/sweat.model';
@@ -32,18 +34,10 @@ export class CreateSweatComponent implements OnInit {
 
   constructor(
     private sweatService: SweatService,
-    private router: Router
-  ) {
-    this.router.events.subscribe(((routerEvent: Event) => {
-      if (routerEvent instanceof NavigationStart) {
-        this.showLoadingIndicator = true;
-      }
-
-      if (routerEvent instanceof NavigationEnd) {
-        this.showLoadingIndicator = false;
-      }
-    }));
-  }
+    private router: Router,
+    private spinnerService: Ng4LoadingSpinnerService,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit() {
     this.name = new FormControl('');
@@ -85,18 +79,21 @@ export class CreateSweatComponent implements OnInit {
       owner: formValues.name
     };
 
+    this.spinnerService.show();
     this.sweatService.post('send', sweat)
       .subscribe(res => {
-      console.log('Success!');
-      console.log(sweat);
-    },
-    err => {
-      console.log('Post Error');
-      console.log(err.status);
-      console.log(err);
-      }
-    );
-    this.navigateHome();
+        this.router.navigate(['/sweats']);
+        this.spinnerService.hide();
+      },
+        err => {
+          console.log('Post Error');
+          console.log(err.status);
+          console.log(err);
+          this.toastr.error('Something is not right. Check console for more information.', 'Post Error', {
+            timeOut: 3500
+          });
+        }
+      );
   }
 
   long2tile(lon, zoom) {
@@ -108,7 +105,7 @@ export class CreateSweatComponent implements OnInit {
       ((1 -
         Math.log(Math.tan((lat * Math.PI) / 180) + 1 / Math.cos((lat * Math.PI) / 180)) / Math.PI) /
         2) *
-        Math.pow(2, zoom)
+      Math.pow(2, zoom)
     );
   }
 
@@ -141,7 +138,7 @@ export class CreateSweatComponent implements OnInit {
   }
 
   cancel() {
-    this.navigateHome();
+    this.router.navigate(['/sweats']);
   }
 
   onCityChange(selectedCity) {
@@ -152,9 +149,4 @@ export class CreateSweatComponent implements OnInit {
     this.locationEntryType = bool;
   }
 
-  navigateHome() {
-    setTimeout(() => {
-      this.router.navigate(['/sweats']);
-    }, 3000);
-  }
 }

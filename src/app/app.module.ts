@@ -16,6 +16,7 @@ import { MessageService } from './shared/message.service';
 import { HttpErrorHandler } from './shared/http-error-handler.service';
 
 import { ToastrModule } from 'ngx-toastr';
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { ToastrModule } from 'ngx-toastr';
     FormsModule,
     ReactiveFormsModule,
     ToastrModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    Ng4LoadingSpinnerModule
   ],
   providers: [
     SweatService,
