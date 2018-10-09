@@ -17,7 +17,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class SweatService {
-  address = 'http://5.2.86.85:8083/';
+  address = '#';
   private handleError: HandleError;
 
   constructor(
